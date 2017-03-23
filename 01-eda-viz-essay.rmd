@@ -52,3 +52,23 @@ nnv %>%
   
 ```
 
+```{r, echo = FALSE, warning = FALSE}
+nnv %>% 
+  group_by(year, name) %>% 
+  filter(year == 1800,
+         office == "U.S. House of Representatives",
+         iteration == "First Ballot") %>% 
+  filter(is.na(county)) %>% 
+  mutate(vote_percentage = vote / sum(vote)) %>% 
+  ggplot(aes(x = vote, y = vote_percentage)) +
+  geom_point(alpha = 0.1) +
+  facet_wrap(~state) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "U.S. House Candidates' Vote Proportion in 1800",
+       subtitle = "Few deviations from national trend",
+       caption = "Few states deviated from the national trend of U.S. House races in 1800.",
+       x = "Votes",
+       y = "Percentage of Votes")
+
+```
+
