@@ -64,9 +64,29 @@ nnv %>%
   geom_point(alpha = 0.1) +
   facet_wrap(~state) +
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "U.S. House Candidates' Vote Proportion in 1800",
+  labs(title = "U.S. House Candidates' Vote Proportion by State in 1800",
        subtitle = "Few deviations from national trend",
        caption = "Few states deviated from the national trend of U.S. House races in 1800.",
+       x = "Votes",
+       y = "Percentage of Votes")
+
+```
+
+```{r, echo = FALSE, warning = FALSE}
+nnv %>% 
+  group_by(name, affiliation, affiliation_id) %>% 
+  filter(year == 1800,
+         office == "U.S. House of Representatives",
+         iteration == "First Ballot") %>% 
+  filter(is.na(county)) %>% 
+  mutate(vote_percentage = vote / sum(vote)) %>% 
+  ggplot(aes(x = vote, y = vote_percentage, color = affiliation)) +
+  geom_point(alpha = 0.3) +
+  facet_wrap(~ state, ncol = 3) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Party Competition in 1800 U.S. House Elections by State",
+       subtitle = "Party affiliation not indicator of race competitiveness",
+       caption = "Party affiliation did not establish a uniform pattern of race competitiveness.",
        x = "Votes",
        y = "Percentage of Votes")
 
