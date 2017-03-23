@@ -33,6 +33,8 @@ nnv <- nnv %>%
   mutate(year = extract_year(date))
 ```
 
+Historians have long established the importance of the presidential election of 1800. Two aspects of the election that make it noteworthy are the competitiveness of the race and the manifest importance of a party system. In this essay, I investigate whether the same attributes were as apparent in the U.S. House of Representative races. I argue from the election data that, on the whole, the U.S. House races were not similarly contentious based on individual and party competition. 
+
 ```{r, echo = FALSE, warning = FALSE}
 nnv %>% 
   group_by(year, name) %>% 
@@ -46,11 +48,13 @@ nnv %>%
   scale_y_continuous(labels = scales::percent) +
   labs(title = "U.S. House Candidates' Vote Proportion in 1800",
        subtitle = "Highly competitive or not at all",
-       caption = "This plot shows that most U.S. House races in 1800 tended to be extremely close or landslides.",
+       caption = "Most U.S. House races in 1800 tended to be extremely close or landslides.",
        x = "Votes",
        y = "Percentage of Votes")
   
 ```
+
+This plot depicts the share of the votes each U.S. House candidate received based on raw vote counts and the percentage of total votes. From this plot, we can determine that were were three predominant groupings of candidates. The first grouping is candidates who received a very small portion of the vote. Second, another grouping is candidates who received near or close to the full portion of votes. Last, the third grouping is of candidates who received near fifty percent of votes. Whereas the first grouping indicates that those candidates were likely marginal candidates, the other two groupings give us the best indication of competitiveness -- the second indicates candidates in highly competitive races and the third indicates candidates in highly uncompetitive races. In terms of national trends, we can see that a majority of U.S. House races were either highly uncompetitive or highly competitive, with relatively few examples between these extremes. 
 
 ```{r, echo = FALSE, warning = FALSE}
 nnv %>% 
@@ -72,6 +76,8 @@ nnv %>%
 
 ```
 
+In breaking down the races by state, we can see that the three main groupings of candidates still largely remain intact. Connecticut, Massachusetts, and New York show some variation from national trends, but Connecticut and New York display a heavy concentration of highly competitive races; Massachusetts appears to have the widest distribution of candidates' vote portions, but the highest concentration of candidates fall within the range of highly uncompetitive races. The most notable variation from national trends is South Carolina, which had its highest concentration of candidates well below the fifty percent mark. Only a relative few managed around fifty percent of the vote. However, on the whole, the other states show a strong concentration of candidates in highly uncompetitive and highly competitive races.
+
 ```{r, echo = FALSE, warning = FALSE}
 nnv %>% 
   group_by(name, affiliation, affiliation_id) %>% 
@@ -92,3 +98,4 @@ nnv %>%
 
 ```
 
+Having determined that U.S. House generally were highly uncompetitive or highly competitive, one could hypothesize that, given the contentious political climate evidenced by the presidential election, the highly uncompetitive races would be dominated by candidates of one party, and the highly competitive races would have a relatively high degree of party affiliation. This plot demonstrates that part affiliation is in fact not an adequate barometer for explaining the competitiveness of a race. Although the affiliations of candidates receiving around fifty percent of the vote did vary greatly, suggesting a high degree of party competition, states with many highly uncompetitive races also showed a good deal of party variation. Perhaps the best example of such a phenomon is Pennsylvania. The notable outlier is Connecticut, which had mostly highly competitive races with mostly Federalist candidates. Also notable is Massachusetts and George, where the former had no affiliated candidates and the latter had candidates supported by both major parties. In sum, party affiliation does not appear to be an adequate indicator of race competitiveness for the U.S. House of Representatives, despite the highly partisan nature of the presidential race. 
