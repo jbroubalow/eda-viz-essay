@@ -1,0 +1,74 @@
+---
+title: "EDA Visual Essay"
+author: "Justin Broubalow"
+date: "3/23/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(stringr)
+library(scales)
+library(readr)
+
+url <- "http://dl.tufts.edu/file_assets/generic/tufts:MS115.003.001.00001/0"
+if (!file.exists("all-votes.tsv")) {
+  download.file(url, "nnv-all-votes.zip")
+  unzip("nnv-all-votes.zip", files = "all-votes.tsv")
+}
+nnv <- read_tsv("all-votes.tsv")
+names(nnv) <- names(nnv) %>% 
+  str_to_lower %>% 
+  str_replace_all("\\.", "") %>% 
+  str_replace_all("\\s", "_")
+
+extract_year <- function(x) {
+  year_char <- stringr::str_extract(x, "\\d{4}") 
+  year_int <- as.integer(year_char)
+  year_int
+}
+nnv <- nnv %>%  
+  mutate(year = extract_year(date))
+```
+
+```{r, echo = FALSE, warning = FALSE}
+nnv %>% 
+  group_by(year, name) %>% 
+  filter(year == 1800,
+         office == "U.S. House of Representatives",
+         iteration == "First Ballot") %>% 
+  filter(is.na(county)) %>% 
+  mutate(vote_percentage = vote / sum(vote)) %>% 
+  ggplot(aes(x = vote, y = vote_percentage)) +
+  geom_point(alpha = 0.1) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "U.S. House Candidates' Vote Proportion in 1800",
+       subtitle = "Highly competitive or not at all",
+       caption = "This plot shows that most U.S. House races in 1800 tended to be extremely close or landslides.",
+       x = "Votes",
+       y = "Percentage of Votes")
+  
+```
+
+```{r, echo = FALSE, warning = FALSE}
+nnv %>% 
+  group_by(year, name) %>% 
+  filter(year == 1800,
+         office == "U.S. House of Representatives",
+         iteration == "First Ballot") %>% 
+  filter(is.na(county)) %>% 
+  mutate(vote_percentage = vote / sum(vote)) %>% 
+  ggplot(aes(x = vote, y = vote_percentage)) +
+  geom_point(alpha = 0.1) +
+  facet_wrap(~ state) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "U.S. House Candidates' Vote Proportion in 1800",
+       subtitle = "Few deviations from national trend",
+       caption = "Few states deviated from the national trend of U.S. House races in 1800.",
+       x = "Votes",
+       y = "Percentage of Votes")
+
+```
+
